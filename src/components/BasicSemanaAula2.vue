@@ -1,0 +1,128 @@
+<template>
+    <div>
+        <v-row class="d-flex justify-center">
+            <v-col cols="0" md="1"></v-col>
+            <v-col cols="12" md="10">
+                <v-row class="d-flex justify-center black--text text-h5">
+                    1. Mindful Eating <br/> 2. Microbioma Intestinal <br/> 3. Fitoativos no Esporte e Longevidade
+                </v-row>
+                <v-row class="d-flex justify-center black--text text-h6">
+                    <v-card elevation="0">
+                        <v-card-title>
+                            Percentual completado: {{aula.progress}}%
+                        </v-card-title>
+                    <v-progress-linear 
+                        :value="aula.progress" 
+                        color="#c5d13f" 
+                        background-color="#614021"
+                        rounded
+                        absolute
+                        height="12"
+                    ></v-progress-linear>
+                    </v-card>
+                </v-row>
+                <v-row>
+            <v-card width="100%" v-show="state.isAuthenticated" elevation="0">
+                <vue-plyr 
+                    ref="plyr" 
+                    @ready="playerReady" 
+                    @ended="setProgress" 
+                    @pause="setProgress" 
+                    :emit="['ready','ended','pause']"
+                ><div data-plyr-provider="youtube" data-plyr-embed-id="_N-aNvyR0mk"></div>
+                </vue-plyr>
+            </v-card>
+                </v-row>
+            </v-col>
+            <v-col cols="0" md="1"></v-col>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row class="d-flex justify-center black--text text-h5 my-12">
+            Materiais da aula: 1. Mindful Eating
+        </v-row>
+        <v-row class="d-flex justify-center">
+          <v-card width="90%">
+          <iframe :src="aula.pdfUrl_mindful" width="100%" height="600px"></iframe>
+          </v-card>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row class="d-flex justify-center black--text text-h5 my-12">
+            Materiais da aula: 2. Microbioma Intestinal
+        </v-row>
+        <v-row class="d-flex justify-center">
+          <v-card width="90%">
+          <iframe :src="aula.pdfUrl_microbioma" width="100%" height="600px"></iframe>
+          </v-card>
+        </v-row>
+        <v-divider></v-divider>
+        <v-row class="d-flex justify-center black--text text-h5 my-12">
+            Materiais da aula: 3. Fitoativos no Esporte e Longevidade
+        </v-row>
+        <v-row class="d-flex justify-center">
+          <v-card width="90%">
+          <iframe :src="aula.pdfUrl_esporte" width="100%" height="600px"></iframe>
+          </v-card>
+        </v-row>                
+    </div>
+</template>
+
+<script>
+// import VuetifyPdf from "vuetify-pdfjs/src/App.vue";
+import firebase from "firebase";
+
+export default {
+  // components: {
+  //   VuetifyPdf
+  // },
+  data() {
+    return {
+      aula: {},
+      false: false,
+      true: true,
+      // model: 0,
+    };
+  },
+  firestore() {
+    return {
+      aula: firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        .doc("BasicSemana")
+        .collection("conteudo")
+        .doc("aula2"),
+    };
+  },
+  computed: {
+    player () {
+      return this.$refs.plyr.player
+    },
+    state() {
+      return this.$store.state;
+    },
+  },
+//   mounted () {
+//     this.player.on('ended', function () {
+//         // set to 100%
+//     });
+//     this.player.on('pause', function () {
+//         // set progress to this.player.currentTime
+//     });
+//   },
+  methods: {
+    playerReady () {
+      this.player.currentTime = Math.round(this.aula.progress / 100 * 11660);
+    },
+    setProgress() {
+        this.$store.dispatch("setProgressBar", {
+            progress: Math.round(this.player.currentTime / 11660 * 100),
+            course: "BasicSemana",
+            aula: "aula2"
+        })
+    }
+  }
+};
+</script>
+
+

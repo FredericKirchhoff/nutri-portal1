@@ -1,0 +1,443 @@
+<template>
+  <div>
+    <v-row class="d-flex black">
+      <v-col cols="0" md="2"></v-col>
+      <v-col cols="12" md="8">
+        <v-row>
+          <v-card to="/" color="black">
+            <v-img
+              src="https://www.linkpicture.com/q/logogogo.png"
+              contain
+              max-height="60"
+              max-width="180"
+              class="mb-12 mx-4"
+            ></v-img>
+          </v-card>
+          <v-spacer></v-spacer>
+          <div v-if="state.isAuthenticated">
+            <v-btn outlined color="#c5d13f" class="mb-12 mx-6" @click="sair">
+              Sair
+            </v-btn>
+            <v-btn outlined color="#c5d13f" class="mb-12 mx-6" to="MeusCursos">
+              Meus cursos
+            </v-btn>
+            <v-dialog v-model="dialogCart" max-width="80%" scrollable>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  outlined
+                  color="#c5d13f"
+                  class="mb-12"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-badge content="!" color="#ff00ff" overlap>
+                    <v-tooltip bottom color="#ff00ff">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon large v-bind="attrs" v-on="on"
+                          >{{ icons.mdiCartVariant }}
+                        </v-icon>
+                      </template>
+                      <span class="white--text text-subtitle-1"
+                        >Finalizar Pagamento!</span
+                      >
+                    </v-tooltip>
+                  </v-badge>
+                </v-btn>
+              </template>
+              <v-card>
+                <Checkout></Checkout>
+                <v-card-actions class="d-flex justify-center align-end">
+                  <v-btn
+                    color="#614021"
+                    text
+                    @click="dialogCart = false"
+                    class="d-flex justify-center align-end"
+                  >
+                    Fechar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+          <div v-else>
+            <v-dialog v-model="dialogLogin" max-width="80%" scrollable>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  outlined
+                  color="#c5d13f"
+                  class="mb-12 mx-12"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon prefix> {{ icons.mdiLoginVariant }}</v-icon>
+                  entrar</v-btn
+                >
+              </template>
+              <v-card height="100%">
+                <SlideShow></SlideShow>
+                <v-card-actions class="d-flex justify-center align-end">
+                  <v-btn
+                    color="#614021"
+                    text
+                    @click="dialogLogin = false"
+                    class="d-flex justify-center align-end"
+                  >
+                    Fechar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </div>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="4" class="d-flex justify-center">
+            <v-card class="ma-4" height="350" width="250">
+              <v-img :src="course.imgUrl" height="100%">
+                <v-row class="text-h6 ml-4 mr-1 mt-2 white--text">
+                  {{ course.nome }}
+                </v-row>
+                <v-card-subtitle class="white--text">
+                  {{ course.descrShort }}
+                </v-card-subtitle>
+              </v-img>
+            </v-card>
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            class="d-flex justify-center white--text align-center"
+          >
+            <v-row class="d-flex justify-center white--text align-center">
+              <h1>
+                {{ course.priceStr }}
+              </h1>
+
+              <div v-if="state.isAuthenticated">
+                <v-dialog v-model="dialogBuy" max-width="80%" scrollable>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="#c5d13f"
+                      class="mx-2"
+                      outlined
+                      large
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="acquireCourse"
+                    >
+                      <v-icon prefix>{{ icons.mdiCartVariant }}</v-icon>
+                      COMPRAR
+                    </v-btn>
+                  </template>
+                  <v-card height="100%">
+                    <v-sheet color="white">
+                      <v-row
+                        class="d-flex justify-center align-center black--text"
+                      >
+                        <v-icon color="green" size="32%" class="mt-8">
+                          {{ icons.mdiCartPlus }}
+                        </v-icon>
+                      </v-row>
+                      <v-row
+                        class="d-flex justify-center align-center black--text text-h6 mt-8"
+                      >
+                        Curso foi adicionado ao seu carrinho!
+                      </v-row>
+
+                      <v-row class="d-flex justify-center text-h6 grey--text">
+                        Veja também estes cursos
+                      </v-row>
+                      <v-row class="d-flex justify-center text-h3 white--text">
+                        <v-sheet color="white">
+                          <v-slide-group
+                            v-model="model"
+                            class="pa-4"
+                            dark
+                            active-class="success"
+                            :prev-icon="icons.mdiArrowLeftBoldCircle"
+                            :next-icon="icons.mdiArrowRightBoldCircle"
+                            show-arrows
+                          >
+                            <v-slide-item
+                              v-for="veja in vejas"
+                              :key="veja"
+                              v-slot:default="{ active, toggle }"
+                            >
+                              <v-card
+                                :color="active ? undefined : 'black'"
+                                class="ma-4"
+                                height="350"
+                                width="250"
+                                @click="toggle"
+                                :to="veja.id"
+                              >
+                                <v-img :src="veja.imgUrl" height="100%">
+                                  <v-row class="text-h6 ml-4 mr-1 mt-2">
+                                    {{ veja.nome }}
+                                  </v-row>
+                                  <v-card-subtitle>
+                                    {{ veja.descrShort }}
+                                  </v-card-subtitle>
+                                </v-img>
+                              </v-card>
+                            </v-slide-item>
+                          </v-slide-group>
+                        </v-sheet>
+                      </v-row>
+                    </v-sheet>
+                    <v-card-actions class="d-flex justify-center">
+                      <v-btn color="#614021" text @click="dialogBuy = false">
+                        Fechar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+              <div v-else>
+                <v-dialog v-model="dialogLoginBuy" max-width="80%">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="#c5d13f"
+                      class="mx-2"
+                      outlined
+                      large
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-icon prefix> {{ icons.mdiLoginVariant }}</v-icon>
+                      COMPRAR
+                    </v-btn>
+                  </template>
+                  <v-card height="100%">
+                    <SlideShow></SlideShow>
+                    <v-card-actions class="d-flex justify-center align-end">
+                      <v-btn
+                        color="#614021"
+                        text
+                        @click="dialogLoginBuy = false"
+                      >
+                        Fechar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+            </v-row>
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            class="d-flex justify-center white--text align-center"
+          >
+            <v-row class="d-flex justify-center white--text text-h6">
+              <v-tooltip bottom color="#614021">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-card class="ma-4" height="350" width="250">
+                    <v-img
+                      src="https://www.linkpicture.com/q/profhipnose.png"
+                      height="100%"
+                    >
+                      <v-row class="text-h6 ml-4 mr-1 mt-2 white--text">
+                        {{ course.prof }}
+                      </v-row>
+                      <v-card-subtitle class="white--text">
+                        Psicologo Clínico
+                      </v-card-subtitle>
+                      <v-card-actions>
+                        <v-btn
+                          text
+                          color="white"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click.prevent
+                        >
+                          Currículo
+                        </v-btn>
+                      </v-card-actions>
+                    </v-img>
+                  </v-card>
+                </template>
+                <span>
+                  <v-row class="text-subtitle-1">
+                    PSICOLOGO CLINICO – CRP 07/16424
+                    <br />
+                    - Especialista em terapia cognitivo comportamental
+                    <br />
+                    - Neuropsicólogo clinico <br />
+                    - Especialista em relaxamento e respiração pela APA
+                    <br />
+                    - Hipnoterapeuta Cognitivo <br />
+                    - Especialização Hipnose Clinica Weissman Institute
+                    1975/1976 <br />
+                    - Especialização em psicodinâmica das cores – EDI, 1986
+                    <br />
+                    - Aluno de Karl Weissman <br />
+                    - Formação hipnose Richard Bandler e John Grinder – 1980
+                    <br />
+                    - Estagio hipnose hospitalar Crianças com dor – Boston 1981
+                    <br />
+                    - Hipnose forense e Linguagem Corporal – FBI , 1982
+                    <br />
+                    - Formação em psicofarmacologia <br />
+                    - Formação em Terapia do Esquema – CETCC SÃO PAULO
+                    <br />
+                    - Autor de 4 livros na área da Hipnoterapia <br />
+                    - Pesquisador na área da espiritualidade e pratica clinica
+                    em psico <br />
+                    - Autor de 2 livros na área da espiritualidade <br />
+                    - Membro da FBTC Federação Brasileira de Terapias Cognitiva
+                    <br />
+                    - Membro da ASBH Associação Brasileira de Hipnose <br />
+                    - Membro da IMAGINAL – Associação Portuguesa de Hipnose
+                    Clinica <br />
+                    - Membro da ATC – Associação de Terapias Cognitivas do RS
+                    <br />
+                    - Ministrante de cursos no Brasil e Europa <br />
+                    - Ministrante de cursos no THE NORA CAVACO INSTITUTE –
+                    Portugal <br />
+                    - Titilar de Cursos na Clinica ALBERTO LOPES – Porto -
+                    Portugal <br />
+                    - Diretor da Cognicci psicologia de Porto Alegre <br />
+                    - Criador da Hipnoterapia Cognitiva no Brasil <br />
+                  </v-row>
+                </span>
+              </v-tooltip>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-center text-center white--text mt-12"
+          >
+            <v-row class="text-h6 white--text">
+              1. A hipnoterapia cognitiva estende-se para varias areas. Aqui a
+              relevancia para a Nutrição resume-se a ensinar ao profissional
+              controle total da ansiedade e gerenciamento do estresse (grande
+              vilão). O programa busca a regulação emocional, pois quando a
+              emoção está no controle a compulsão e a agula são os carros chefe.
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-center text-center white--text my-12"
+          >
+            <v-row class=" d-flex justify-center text-h6 white--text">
+              2. Abrordaremos: <br />
+              a. Importancia do rapport <br />
+              b. anamnese para hipnose <br />
+              c. Ferramentas de avaliação e testagem. <br />
+              d. Diagrama de conceitualização. <br />
+              e. Preparando o cliente. <br />
+              f. Testagem. <br />
+              g. Técnicas de indução e aprofundamento. <br />
+              h. Controle dos sintomas da ansiedade. <br />
+              g. Tecnicas para o emagrecimento e controle emocional de dietas.
+              <br />
+              h. balão Intragastrico Imaginário. <br />
+              i. Tecnica de aversão a alimentos. <br />
+              j. Encerramento
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-center text-center white--text"
+          >
+            <v-row class="d-flex justify-center text-h5"> CONTEÚDO </v-row>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-center text-center white--text"
+          >
+            <v-text class="text-h6"> Aula ao vivo do 02/09/2020 </v-text>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="0" md="2"></v-col>
+    </v-row>
+  </div>
+</template>
+
+<script>
+import firebase from "firebase";
+import SlideShow from "../components/SlideShow";
+import Checkout from "../components/Checkout";
+import {
+  mdiCartVariant,
+  mdiCartPlus,
+  mdiArrowRightBoldCircle,
+  mdiArrowLeftBoldCircle,
+  mdiLoginVariant,
+} from "@mdi/js";
+
+export default {
+  components: { SlideShow, Checkout },
+  data() {
+    return {
+      dialogCart: false,
+      dialogLogin: false,
+      dialogLoginBuy: false,
+      dialogBuy: false,
+      model: null,
+      course: {},
+      // cartElements: [],
+      icons: {
+        mdiCartVariant,
+        mdiCartPlus,
+        mdiArrowRightBoldCircle,
+        mdiArrowLeftBoldCircle,
+        mdiLoginVariant,
+      },
+      vejas: {},
+    };
+  },
+  firestore() {
+    return {
+      course: firebase.firestore().collection("courses").doc("HipnoseClinica"),
+      vejas: firebase
+        .firestore()
+        .collection("courses")
+        .doc("HipnoseClinica")
+        .collection("vejatambem")
+        .doc("vejatambem"),
+      // cartElements: firebase
+      //   .firestore()
+      //   .collection("users")
+      //   .doc(this.$store.state.user)
+      //   .collection("wantedCourses"),
+    };
+  },
+  computed: {
+    state() {
+      return this.$store.state;
+    },
+  },
+  methods: {
+    acquireCourse() {
+      this.$store.dispatch("userAcquireCourse", {
+        descrShort:
+          "Quando a emoção está no controle a compulsão e a gula são os carros chefe. Ajude seus pacientes a controlar a ansiedade.",
+        imgUrl: "https://www.linkpicture.com/q/hipnoseclinica.png",
+        courseId: "HipnoseClinica",
+        course:
+          "Hipnose clínica como ferramenta potencializadora no emagrecimento",
+        price: 60,
+        linkCurso: "Curso-Hipnose-clinica",
+        // ref: await firebase.firestore().collection("courses").doc("CausasEndocrinas").ref
+      });
+    },
+    sair() {
+      this.$store.dispatch("userLogout");
+    },
+  },
+};
+</script>
+
+<style scoped>
+</style>

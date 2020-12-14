@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "portal-nutri",
+    "portal-nutri": "portal-nutri"
+  }
+}

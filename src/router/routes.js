@@ -56,6 +56,12 @@ import NutricaoRenalCurso from "../pages/NutricaoRenalCurso.vue";
 import NutricaoRenalAula1 from "../components/NutricaoRenalAula1.vue";
 import NutricaoRenalCertificado from "../components/NutricaoRenalCertificado.vue";
 
+import WorkshopDecolaNutri from "../components/WorkshopDecolaNutri.vue";
+import WorkshopDecolaNutriCurso from "../pages/WorkshopDecolaNutriCurso.vue";
+import WorkshopDecolaNutriAula1 from "../components/WorkshopDecolaNutriAula1.vue";
+import WorkshopDecolaNutriAula2 from "../components/WorkshopDecolaNutriAula2.vue";
+import WorkshopDecolaNutriAula3 from "../components/WorkshopDecolaNutriAula3.vue";
+
 import MeusCursos from "../pages/MeusCursos.vue";
 
 export default [
@@ -78,6 +84,36 @@ export default [
   {
     path: "/CausasEndocrinas",
     component: CausasEndocrinas
+  },
+  {
+    path: "/WorkshopDecolaNutri",
+    component: WorkshopDecolaNutri
+  },
+  {
+    path: "/Workshop-Decola-Nutri-Curso",
+    component: WorkshopDecolaNutriCurso,
+    children: [
+      {
+        path: "/WorkshopDecolaNutriAula1",
+        name: "WorkshopDecolaNutriAula1",
+        component: WorkshopDecolaNutriAula1
+      },
+      {
+        path: "/WorkshopDecolaNutriAula2",
+        name: "WorkshopDecolaNutriAula2",
+        component: WorkshopDecolaNutriAula2
+      },
+      {
+        path: "/WorkshopDecolaNutriAula3",
+        name: "WorkshopDecolaNutriAula3",
+        component: WorkshopDecolaNutriAula3
+      },            
+      // {
+      //   path: "/WorkshopDecolaNutriCertificado",
+      //   name: "WorkshopDecolaNutriCertificado",
+      //   component: WorkshopDecolaNutriCertificado
+      // }
+    ]
   },
   {
     path: "/Curso-Causas-endocrinas-da-obesidade",

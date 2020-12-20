@@ -190,6 +190,19 @@
                 ></v-text-field>
               </v-col>
             </v-row>
+
+            <v-row align="d-flex justify-center">
+              <v-col class="d-flex justify-center" cols="12">
+                <v-btn
+                  large
+                  color="grey"
+                  @click="buySildeBackward"
+                  class="black--text"
+                  >Voltar</v-btn
+                >
+              </v-col>
+            </v-row>
+
             <v-row align="d-flex justify-center">
               <v-col class="d-flex justify-center" cols="12">
                 <v-btn
@@ -294,6 +307,11 @@ export default {
         nr: 2,
       });
     },
+    buySildeBackward() {
+      this.$store.dispatch("setBuySlide", {
+        nr: 0,
+      });
+    },    
     buySildeCadastro() {
       this.$store.dispatch("setBuySlide", {
         nr: 1,

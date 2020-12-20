@@ -15,10 +15,10 @@ export const store = new Vuex.Store({
       resetEmailsent: false,
       emailOk: false,
       loginOk: false,
-      cardInfoError: false
+      cardInfoError: false,
     },
     buySlide: 0,
-    wantedCourses: []
+    wantedCourses: [],
     //     apiUrl: 'https://api.edamam.com/search'
   },
   mutations: {
@@ -42,7 +42,7 @@ export const store = new Vuex.Store({
     },
     setCardInfoError(state, payload) {
       state.cardInfoError = payload;
-    }
+    },
     // setRecipes(state, payload) {
     //     state.recipes = payload;
     // }
@@ -52,9 +52,9 @@ export const store = new Vuex.Store({
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(function (user) {
+        .then(function(user) {
           user.updateProfile({
-            displayName: nome
+            displayName: nome,
           });
           commit("setUser", email);
           commit("setIsAuthenticated", true);
@@ -65,7 +65,7 @@ export const store = new Vuex.Store({
           commit("setIsAuthenticated", false);
           commit("setBuySlideNr", 0);
           // if (error.code === "FIRAuthErrorCodeEmailAlreadyInUse") {
-            commit("setAlertsEmailOk", true);
+          commit("setAlertsEmailOk", true);
           // }
         });
     },
@@ -91,13 +91,13 @@ export const store = new Vuex.Store({
       firebase
         .auth()
         .signOut()
-        .then(function () {
+        .then(function() {
           commit("setUser", "test@gmail.com");
           commit("setIsAuthenticated", false);
           commit("setAlertsLoginOk", false);
           commit("setBuySlideNr", 0);
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error.message);
         });
     },
@@ -105,16 +105,19 @@ export const store = new Vuex.Store({
       firebase
         .auth()
         .sendPasswordResetEmail(email)
-        .then(function () {
+        .then(function() {
           commit("setResetEmailsent", true);
           commit("setAlertsLoginOk", false);
           commit("setBuySlideNr", 0);
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error.message);
         });
     },
-    userAcquireCourse({ arg }, { courseId, course, price, imgUrl, descrShort, linkCurso }) {
+    userAcquireCourse(
+      { arg },
+      { courseId, course, price, imgUrl, descrShort, linkCurso }
+    ) {
       firebase
         .firestore()
         .collection("users")
@@ -124,22 +127,94 @@ export const store = new Vuex.Store({
         // .add({
         .doc(courseId)
         .set({
-          "course": course,
-          "price": price,
-          "paid": 0,
-          "courseId": courseId,
-          "imgUrl": imgUrl,
-          "descrShort": descrShort,
-          "linkCurso": linkCurso,
-          "user": firebase.auth().currentUser.email
+          course: course,
+          price: price,
+          paid: 0,
+          courseId: courseId,
+          imgUrl: imgUrl,
+          descrShort: descrShort,
+          linkCurso: linkCurso,
+          user: firebase.auth().currentUser.email,
         });
+      console.log(arg);
+    },
+    userAcquireCourseFree(
+      { arg },
+      { courseId, course, imgUrl, descrShort, linkCurso }
+    ) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        // .doc(course).set(course, price, ref) ... conteudoArray.forEach(function (aula) {...}) batch
+        // .add({
+        .doc(courseId)
+        .set({
+          course: course,
+          paid: 1,
+          free: true,
+          courseId: courseId,
+          imgUrl: imgUrl,
+          descrShort: descrShort,
+          linkCurso: linkCurso,
+          user: firebase.auth().currentUser.email,
+        });
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        .doc(courseId)
+        .collection("conteudo")
+        .doc("aula1")
+        .set({
+          nome: "Dia 1",
+          route: "WorkshopDecolaNutriAula2",
+          title: "Aula ao vivo do dia 05/01/2021",
+          videoUrl: "j985fBvolbU",
+          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+        });
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        .doc(courseId)
+        .collection("conteudo")
+        .doc("aula2")
+        .set({
+          nome: "Dia 2",
+          route: "WorkshopDecolaNutriAula2",
+          title: "Aula ao vivo do dia 06/01/2021",
+          videoUrl: "j985fBvolbU",
+          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+        });
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        .doc(courseId)
+        .collection("conteudo")
+        .doc("aula3")
+        .set({
+          nome: "Dia 3",
+          route: "WorkshopDecolaNutriAula3",
+          title: "Aula ao vivo do dia 07/01/2021",
+          videoUrl: "j985fBvolbU",
+          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+        });
+
       console.log(arg);
     },
     setBuySlide({ commit }, { nr }) {
       commit("setBuySlideNr", nr);
     },
-    removeFromCart({arg}, {elementId}) {
-
+    removeFromCart({ arg }, { elementId }) {
       firebase
         .firestore()
         .collection("users")
@@ -147,17 +222,19 @@ export const store = new Vuex.Store({
         .collection("wantedCourses")
         .doc(elementId)
         .delete()
-        .then(function () {
-          console.log("element removed from cart")
-        }).catch(function (error) {console.log(error.message)});
-      
-        console.log(arg);
+        .then(function() {
+          console.log("element removed from cart");
+        })
+        .catch(function(error) {
+          console.log(error.message);
+        });
+
+      console.log(arg);
     },
-    cardInfoError({ commit }, { bool}) { 
+    cardInfoError({ commit }, { bool }) {
       commit("setCardInfoError", bool);
     },
     confirmPayment({ commit }, { cardElement, nomeCartao, soma }) {
-
       // const stripe = Stripe("pk_test_51HbFJ0GkUXTqQoyNB2YiZTZLbrwIg71Xs2sob0JWG2jmrSE8NPIKBW6IL9ENGXx442QDrTtQiuAqzpYUTbaNHnI100glM3gd5Y");
 
       // const setup_secret = firebase.firestore().collection("users").doc(
@@ -169,12 +246,12 @@ export const store = new Vuex.Store({
       // const { setupIntent, error } = await stripe.confirmCardSetup(
       //   await setup_secret,
       //   {
-      const  payment_method = {
-            "card": cardElement,
-            "billing_details": {
-              name: nomeCartao,
-            }
-          }
+      const payment_method = {
+        card: cardElement,
+        billing_details: {
+          name: nomeCartao,
+        },
+      };
       //   }
       // );
 
@@ -184,26 +261,24 @@ export const store = new Vuex.Store({
       // }
       //   commit("setCardInfoError", false);
 
-        const data = {
-          "payment_method": /*setupIntent.*/payment_method,
-          "amount": soma,
-          "status": "new",
-        };
+      const data = {
+        payment_method: /*setupIntent.*/ payment_method,
+        amount: soma,
+        status: "new",
+      };
 
-        console.log(data)
+      console.log(data);
 
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(firebase.auth().currentUser.email)
-          .collection("payments")
-          .add(data);
-        
-        console.log(commit);
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("payments")
+        .add(data);
+
+      console.log(commit);
     },
-    setProgressBar( { commit }, {
-      progress, course, aula
-    }) {
+    setProgressBar({ commit }, { progress, course, aula }) {
       firebase
         .firestore()
         .collection("users")
@@ -213,10 +288,10 @@ export const store = new Vuex.Store({
         .collection("conteudo")
         .doc(aula)
         .update({
-          "progress": progress
+          progress: progress,
         });
       console.log(commit);
-    }
+    },
     // async getRecipes({ state, commit }, plan) {
     //     try {
     //         let response = await axios.get('${state.apiurl}', {
@@ -233,5 +308,5 @@ export const store = new Vuex.Store({
     //         commit('setRecipes', \[\]);
     //     }
     // }
-  }
+  },
 });

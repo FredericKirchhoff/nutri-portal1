@@ -28,8 +28,8 @@
                 <v-card
                   :color="active ? undefined : 'black'"
                   class="ma-4"
-                  height="350"
-                  width="250"
+                  height="500"
+                  width="350"
                   @click="toggle"
                   :to="course.id"
                 >
@@ -65,7 +65,7 @@ export default {
   }),
   firestore() {
     return {
-      courses: firebase.firestore().collection("courses"),
+      courses: firebase.firestore().collection("coursesFree"),
     };
   },
 };

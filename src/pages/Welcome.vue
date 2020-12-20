@@ -11,7 +11,8 @@
 
 <script>
 import WelcomeFooter from "../components/WelcomeFooter";
-import WelcomeCourseCarousel from "../components/WelcomeCourseCarousel";
+// import WelcomeCourseCarousel from "../components/WelcomeCourseCarousel";
+import WelcomeCourseCarousel from "../components/WelcomeCourseFreeCarou";
 import WelcomeSlide from "../components/WelcomeSlide";
 import WelcomeSejaProf from "../components/WelcomeSejaProf";
 import WelcomeCategories from "../components/WelcomeCategories";

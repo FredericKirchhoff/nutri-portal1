@@ -111,7 +111,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                cadastra-se
+                cadastre-se
               </v-btn>
             </template>
             <v-card height="100%">

@@ -88,7 +88,7 @@
                       @click="acquireCourse"
                     >
                       <v-icon prefix>{{ icons.mdiCartVariant }}</v-icon>
-                      Adquirir
+                      Matricule-se
                     </v-btn>
                   </template>
                   <v-card height="100%">
@@ -167,7 +167,7 @@
                       v-on="on"
                     >
                       <v-icon prefix> {{ icons.mdiLoginVariant }}</v-icon>
-                      Adquirir
+                      Matricule-se
                     </v-btn>
                   </template>
                   <v-card height="100%">
@@ -204,16 +204,69 @@
         </v-row>
 
         <v-row class="d-flex justify-center">
-          <v-tooltip bottom color="#614021">
-            <template v-slot:activator="{ on, attrs }">
-              <v-card class="ma-4" height="150" width="500" color="black">
-                <v-row class="d-flex justify-center text-h6 ml-4 mr-1 mt-2 white--text">
-                  {{ course.prof }}
+          <!-- <v-tooltip bottom color="#614021">
+            <template v-slot:activator="{ on, attrs }"> -->
+          <v-col cols="12" md="8">
+            <v-row class="d-flex justify-center text-h6 grey--text">
+              CONTEÚDO
+            </v-row>
+            <!-- <v-row>
+          <v-col
+            cols="12"
+            class="d-flex justify-center text-center white--text"
+          > -->
+            <!-- <v-row class="d-flex justify-center"> -->
+            <v-row class="d-flex justify-center text-subtitle-1 white--text"
+              >Mentalidade de Sucesso</v-row
+            >
+            <v-row
+              class="d-flex justify-center text-subtitle-2 grey--text mb-3"
+            >
+              Como desenvolver a mentalidade de uma nutricionista de sucesso
+            </v-row>
+            <!-- </v-row>
+        <v-row class="d-flex justify-center"> -->
+            <v-row class="d-flex justify-center text-subtitle-1 white--text"
+              >Redes Sociais
+            </v-row>
+            <v-row
+              class="d-flex justify-center text-subtitle-2 grey--text mb-3"
+            >
+              Como melhorar sua presença nas redes sociais e melhorar seu perfil
+              profissional
+            </v-row>
+            <!-- </v-row>
+        <v-row class="d-flex justify-center"> -->
+            <v-row class="d-flex justify-center text-subtitle-1 white--text"
+              >Empreendedorismo</v-row
+            >
+            <v-row class="d-flex justify-center text-subtitle-2 grey--text"
+              >Como desenvolver o seu lado empreendedor e decolar
+              financeiramente
+            </v-row>
+            <!-- </v-row> -->
+            <!-- </v-col>
+        </v-row> -->
+          </v-col>
+          <v-col
+            cols="12"
+            md="4"
+            class="d-flex justify-center white--text align-center"
+          >
+            <v-card class="ma-4" height="150" width="500" color="black">
+              <v-row
+                class="d-flex justify-center text-subtitle-1 ml-4 mr-1 mt-2 white--text"
+              >
+                {{ course.prof }}
+              </v-row>
+              <v-card-subtitle class="d-flex justify-center white--text">
+                <v-row class="d-flex justify-center text-subtitle-2">
+                  Nutricionista e Empresária <br />
+                  CEO do Clube da Nutricionista
+                  <br />Mestre em Neurociências e Biologia Molecular<br />
                 </v-row>
-                <v-card-subtitle class="d-flex justify-center white--text">
-                  Nutricionista e Empresária
-                </v-card-subtitle>
-                <v-card-actions class="d-flex justify-center">
+              </v-card-subtitle>
+              <!-- <v-card-actions class="d-flex justify-center">
                   <v-btn
                     text
                     color="white"
@@ -223,9 +276,9 @@
                   >
                     Currículo
                   </v-btn>
-                </v-card-actions>
-              </v-card>
-            </template>
+                </v-card-actions> -->
+            </v-card>
+            <!-- </template>
             <span>
               <v-row class="text-subtitle-1">
                 CEO do Clube da Nutricionista
@@ -233,70 +286,9 @@
                 Nutricionista + Mestre em Neurociências <br />
               </v-row>
             </span>
-          </v-tooltip>
-        </v-row>
-
-        <!-- <v-row>
-          <v-col
-            cols="12"
-            class="d-flex justify-center text-center white--text mt-12"
-          >
-            <v-row class="text-h6 white--text">
-              1. A hipnoterapia cognitiva estende-se para varias areas. Aqui a
-              relevancia para a Nutrição resume-se a ensinar ao profissional
-              controle total da ansiedade e gerenciamento do estresse (grande
-              vilão). O programa busca a regulação emocional, pois quando a
-              emoção está no controle a compulsão e a agula são os carros chefe.
-            </v-row>
+          </v-tooltip> -->
           </v-col>
         </v-row>
-        <v-row>
-          <v-col
-            cols="12"
-            class="d-flex justify-center text-center white--text my-12"
-          >
-            <v-row class=" d-flex justify-center text-h6 white--text">
-              2. Abrordaremos: <br />
-              a. Importancia do rapport <br />
-              b. anamnese para hipnose <br />
-              c. Ferramentas de avaliação e testagem. <br />
-              d. Diagrama de conceitualização. <br />
-              e. Preparando o cliente. <br />
-              f. Testagem. <br />
-              g. Técnicas de indução e aprofundamento. <br />
-              h. Controle dos sintomas da ansiedade. <br />
-              g. Tecnicas para o emagrecimento e controle emocional de dietas.
-              <br />
-              h. balão Intragastrico Imaginário. <br />
-              i. Tecnica de aversão a alimentos. <br />
-              j. Encerramento
-            </v-row>
-          </v-col>
-        </v-row> -->
-        <v-row>
-          <v-col
-            cols="12"
-            class="d-flex justify-center text-center white--text"
-          >
-            <v-row class="d-flex justify-center text-h5"> CONTEÚDO </v-row>
-          </v-col>
-        </v-row>
-        <!-- <v-row>
-          <v-col
-            cols="12"
-            class="d-flex justify-center text-center white--text"
-          > -->
-        <v-row class="d-flex justify-center text-subtitle-1 white--text">
-          Aula ao vivo do 05/01/2021
-        </v-row>
-        <v-row class="d-flex justify-center text-subtitle-1 white--text">
-          Aula ao vivo do 06/01/2021
-        </v-row>
-        <v-row class="d-flex justify-center text-subtitle-1 white--text">
-          Aula ao vivo do 07/01/2021
-        </v-row>
-        <!-- </v-col>
-        </v-row> -->
       </v-col>
       <v-col cols="0" md="2"></v-col>
     </v-row>

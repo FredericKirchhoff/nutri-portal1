@@ -173,8 +173,8 @@ export const store = new Vuex.Store({
           nome: "Dia 1",
           route: "WorkshopDecolaNutriAula2",
           title: "Aula ao vivo do dia 05/01/2021",
-          videoUrl: "j985fBvolbU",
-          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+          videoUrl: "",
+          pdfUrl: "",
         });
 
       firebase
@@ -189,8 +189,8 @@ export const store = new Vuex.Store({
           nome: "Dia 2",
           route: "WorkshopDecolaNutriAula2",
           title: "Aula ao vivo do dia 06/01/2021",
-          videoUrl: "j985fBvolbU",
-          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+          videoUrl: "",
+          pdfUrl: "",
         });
 
       firebase
@@ -205,8 +205,21 @@ export const store = new Vuex.Store({
           nome: "Dia 3",
           route: "WorkshopDecolaNutriAula3",
           title: "Aula ao vivo do dia 07/01/2021",
-          videoUrl: "j985fBvolbU",
-          pdfUrl: "https://nutri.online/CAUSASENDOCRINAS.pdf"
+          videoUrl: "",
+          pdfUrl: "",
+        });
+
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(firebase.auth().currentUser.email)
+        .collection("wantedCourses")
+        .doc(courseId)
+        .collection("conteudo")
+        .doc("ebookProcrastinacao")
+        .set({
+          route: "EbookProcrastinacao",
+          pdfUrl: "https://nutri.online/EbookProcrastinacao.pdf",
         });
 
       console.log(arg);

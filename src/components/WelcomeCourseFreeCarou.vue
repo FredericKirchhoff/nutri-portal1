@@ -9,15 +9,6 @@
         <v-row class="d-flex black justify-center text-h6 grey--text">
           Inscrições abertas
         </v-row>
-        <v-row class="d-flex black justify-center">
-          <v-btn
-            large
-            outlined
-            color="#c5d13f"
-          >
-            Matricula-se
-          </v-btn>
-        </v-row>
         <v-row class="d-flex black justify-center text-h3 white--text">
           <!-- <v-sheet class="mx-auto" min-width="600" color="black">
             <v-slide-group
@@ -34,24 +25,29 @@
                 :key="course"
                 v-slot:default="{ active, toggle }"
               > -->
-                <v-card
-                  :color="active ? undefined : 'black'"
-                  class="ma-4"
-                  height="500"
-                  width="350"
-                  @click="toggle"
-                  :to="course.id"
-                >
-                  <v-img :src="course.imgUrl" height="100%">
-                    <v-row class="text-h6 ml-4 mr-1 mt-2">
-                      {{ course.nome }}
-                    </v-row>
-                    <v-card-subtitle> {{ course.descrShort }} </v-card-subtitle>
-                  </v-img>
-                </v-card>
-              <!-- </v-slide-item>
+          <v-card
+            :color="active ? undefined : 'black'"
+            class="ma-4"
+            height="500"
+            width="350"
+            @click="toggle"
+            :to="course.id"
+          >
+            <v-img :src="course.imgUrl" height="100%">
+              <v-row class="text-h6 ml-4 mr-1 mt-2">
+                {{ course.nome }}
+              </v-row>
+              <v-card-subtitle> {{ course.descrShort }} </v-card-subtitle>
+            </v-img>
+          </v-card>
+          <!-- </v-slide-item>
             </v-slide-group>
           </v-sheet> -->
+        </v-row>
+        <v-row class="d-flex black justify-center">
+          <v-btn large outlined color="#c5d13f" :to="course.id" class="my-3">
+            Matricule-se
+          </v-btn>
         </v-row>
       </v-col>
       <v-col cols="0" md="2"></v-col>
@@ -71,12 +67,15 @@ export default {
       mdiArrowLeftBoldCircle,
     },
     // courses: [],
-    course: {}
+    course: {},
   }),
   firestore() {
     return {
       // courses: firebase.firestore().collection("coursesFree"),
-      course: firebase.firestore().collection("coursesFree").doc("WorkshopDecolaNutri")
+      course: firebase
+        .firestore()
+        .collection("coursesFree")
+        .doc("WorkshopDecolaNutri"),
     };
   },
 };

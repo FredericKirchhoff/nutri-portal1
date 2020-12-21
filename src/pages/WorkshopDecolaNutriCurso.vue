@@ -63,6 +63,34 @@
                 </v-list-item>
               </router-link>
             </v-list-item>
+
+            <v-list-item >
+              <router-link
+                to="/EbookProcrastinacao"
+                style="text-decoration: none; color: inherit"
+                v-slot="{ href, navigate, isActive, isExactActive }"
+                replace
+              >
+                <v-list-item
+                  :class="[
+                    isActive && 'router-link-active',
+                    isExactActive && 'router-link-exact-active',
+                  ]"
+                  :href="href"
+                  @click="navigate"
+                >
+                  <!-- <v-badge
+                    :content="item.progress"
+                    :value="item.progress"
+                    color="green"
+                    left
+                  > -->
+                    <v-list-item-title>Ebook "Supere a Procrastinação"</v-list-item-title>
+                  <!-- </v-badge> -->
+                </v-list-item>
+              </router-link>
+            </v-list-item>
+
           </v-list>
           <!-- <v-list dense nav class="py-0">
             <v-list-item>

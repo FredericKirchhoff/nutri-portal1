@@ -62,6 +62,8 @@ import WorkshopDecolaNutriAula1 from "../components/WorkshopDecolaNutriAula1.vue
 import WorkshopDecolaNutriAula2 from "../components/WorkshopDecolaNutriAula2.vue";
 import WorkshopDecolaNutriAula3 from "../components/WorkshopDecolaNutriAula3.vue";
 
+import EbookProcrastinacao from "../components/EbookProcrastinacao.vue";
+
 import MeusCursos from "../pages/MeusCursos.vue";
 
 export default [
@@ -108,11 +110,11 @@ export default [
         name: "WorkshopDecolaNutriAula3",
         component: WorkshopDecolaNutriAula3
       },            
-      // {
-      //   path: "/WorkshopDecolaNutriCertificado",
-      //   name: "WorkshopDecolaNutriCertificado",
-      //   component: WorkshopDecolaNutriCertificado
-      // }
+      {
+        path: "/EbookProcrastinacao",
+        name: "EbookProcrastinacao",
+        component: EbookProcrastinacao
+      }
     ]
   },
   {

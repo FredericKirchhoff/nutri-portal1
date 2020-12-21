@@ -67,7 +67,7 @@
               E EMPREENDEDORISMO
             </v-col>
             <v-col cols="12" md="4" class="d-flex justify-center">
-              <v-dialog v-model="dialog" width="80%">
+              <!-- <v-dialog v-model="dialog" width="80%">
                 <template v-slot:activator="{ on, attrs }">
                   <v-card
                     class="transparent"
@@ -95,7 +95,7 @@
                     </v-btn>
                   </v-card-actions>
                 </v-card>
-              </v-dialog>
+              </v-dialog> -->
             </v-col>
             <v-col class="d-flex text-left text-h6 my-8 mx-4" cols="12" md="8">
               Acesse nossos conteúdos exclusívos e conheça o portal do clube.
